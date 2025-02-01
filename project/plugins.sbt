@@ -6,3 +6,4 @@ addSbtPlugin("org.scala-native"   % "sbt-scala-native"                          
 addSbtPlugin("org.portable-scala" % "sbt-scala-native-crossproject"               % "1.3.2")
 addSbtPlugin("com.github.sbt"     % "sbt-javaagent"                               % "0.1.8")
 addSbtPlugin("com.armanbilge"     % "sbt-scala-native-config-brew-github-actions" % "0.3.0")
+addSbtPlugin("com.eed3si9n"       % "sbt-buildinfo"                               % "0.13.1")

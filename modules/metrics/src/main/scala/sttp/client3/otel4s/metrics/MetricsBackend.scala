@@ -8,13 +8,7 @@ import cats.syntax.flatMap._
 import cats.syntax.functor._
 import cats.syntax.foldable._
 import org.typelevel.otel4s.Attributes
-import org.typelevel.otel4s.metrics.{
-  BucketBoundaries,
-  Histogram,
-  Meter,
-  MeterProvider,
-  UpDownCounter
-}
+import org.typelevel.otel4s.metrics.{BucketBoundaries, Histogram, Meter, MeterProvider, UpDownCounter}
 import org.typelevel.otel4s.semconv.attributes.{
   ErrorAttributes,
   HttpAttributes,
@@ -41,7 +35,7 @@ object MetricsBackend {
       requestBodySizeHistogramBuckets: Option[BucketBoundaries] = None,
       responseBodySizeHistogramBuckets: Option[BucketBoundaries] = None,
   ): F[SttpBackend[F, P]] =
-    MeterProvider[F].meter("sttp.client3").withVersion("0.0.1").get.flatMap { implicit tracer =>
+    MeterProvider[F].meter("sttp.client3").withVersion(BuildInfo.version).get.flatMap { implicit tracer =>
       usingMeter(
         delegate,
         requestDurationHistogramBuckets,

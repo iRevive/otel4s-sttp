@@ -31,9 +31,9 @@ class TracingBackendSuite extends CatsEffectSuite {
           }
 
         val makeBackend = TracingBackend[IO, Any](
+          stub,
           SpanNameSelector.default(UriTemplateClassifier.none),
           SpanAttributes.default,
-          stub
         )
 
         for {
@@ -56,9 +56,9 @@ class TracingBackendSuite extends CatsEffectSuite {
         }
 
         val makeBackend = TracingBackend[IO, Any](
+          stub,
           SpanNameSelector.default(UriTemplateClassifier.none),
           SpanAttributes.default,
-          stub
         )
 
         for {
@@ -102,9 +102,9 @@ class TracingBackendSuite extends CatsEffectSuite {
         }
 
         val makeBackend = TracingBackend[IO, Any](
+          stub,
           SpanNameSelector.default(UriTemplateClassifier.none),
           SpanAttributes.default,
-          stub
         )
 
         for {
@@ -152,9 +152,9 @@ class TracingBackendSuite extends CatsEffectSuite {
           }
 
           val makeBackend = TracingBackend[IO, Any](
+            stub,
             SpanNameSelector.default(UriTemplateClassifier.none),
             SpanAttributes.default,
-            stub
           )
 
           for {

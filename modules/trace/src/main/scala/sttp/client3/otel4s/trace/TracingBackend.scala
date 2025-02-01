@@ -51,18 +51,18 @@ private class TracingBackend[F[_]: MonadCancelThrow: Tracer, P](
 object TracingBackend {
 
   def apply[F[_]: MonadCancelThrow: TracerProvider, P](
-      spanNameSelector: SpanNameSelector,
-      spanAttributes: SpanAttributes,
-      delegate: SttpBackend[F, P]
+      delegate: SttpBackend[F, P],
+      spanNameSelector: SpanNameSelector = SpanNameSelector.default(UriTemplateClassifier.none),
+      spanAttributes: SpanAttributes = SpanAttributes.default,
   ): F[SttpBackend[F, P]] =
-    TracerProvider[F].tracer("sttp.client3").withVersion("0.0.1").get.map { implicit tracer =>
-      usingTracer(spanNameSelector, spanAttributes, delegate)
+    TracerProvider[F].tracer("sttp.client3").withVersion(BuildInfo.version).get.map { implicit tracer =>
+      usingTracer(delegate, spanNameSelector, spanAttributes)
     }
 
   def usingTracer[F[_]: MonadCancelThrow: Tracer, P](
-      spanNameSelector: SpanNameSelector,
-      spanAttributes: SpanAttributes,
-      delegate: SttpBackend[F, P]
+      delegate: SttpBackend[F, P],
+      spanNameSelector: SpanNameSelector = SpanNameSelector.default(UriTemplateClassifier.none),
+      spanAttributes: SpanAttributes = SpanAttributes.default,
   ): SttpBackend[F, P] =
     if (Tracer[F].meta.isEnabled) {
       new FollowRedirectsBackend(

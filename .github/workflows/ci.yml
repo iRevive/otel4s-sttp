@@ -30,13 +30,11 @@ jobs:
         os: [ubuntu-22.04]
         scala: [2.13, 3]
         java: [temurin@8, semeru@21]
-        project: [rootJS, rootJVM, rootNative]
+        project: [rootJS, rootJVM]
         exclude:
           - scala: 3
             java: semeru@21
           - project: rootJS
-            java: semeru@21
-          - project: rootNative
             java: semeru@21
     runs-on: ${{ matrix.os }}
     timeout-minutes: 60
@@ -90,10 +88,6 @@ jobs:
         if: matrix.project == 'rootJS'
         run: sbt 'project ${{ matrix.project }}' '++ ${{ matrix.scala }}' Test/scalaJSLinkerResult
 
-      - name: nativeLink
-        if: matrix.project == 'rootNative'
-        run: sbt 'project ${{ matrix.project }}' '++ ${{ matrix.scala }}' Test/nativeLink
-
       - name: Test
         run: sbt 'project ${{ matrix.project }}' '++ ${{ matrix.scala }}' test
 
@@ -111,11 +105,11 @@ jobs:
 
       - name: Make target directories
         if: github.event_name != 'pull_request' && (startsWith(github.ref, 'refs/tags/v') || github.ref == 'refs/heads/main')
-        run: mkdir -p modules/trace/.jvm/target modules/trace/.js/target modules/metrics/native/target modules/metrics/jvm/target modules/metrics/js/target modules/trace/.native/target project/target
+        run: mkdir -p modules/trace/.jvm/target modules/trace/.js/target modules/metrics/.jvm/target modules/metrics/.js/target project/target
 
       - name: Compress target directories
         if: github.event_name != 'pull_request' && (startsWith(github.ref, 'refs/tags/v') || github.ref == 'refs/heads/main')
-        run: tar cf targets.tar modules/trace/.jvm/target modules/trace/.js/target modules/metrics/native/target modules/metrics/jvm/target modules/metrics/js/target modules/trace/.native/target project/target
+        run: tar cf targets.tar modules/trace/.jvm/target modules/trace/.js/target modules/metrics/.jvm/target modules/metrics/.js/target project/target
 
       - name: Upload target directories
         if: github.event_name != 'pull_request' && (startsWith(github.ref, 'refs/tags/v') || github.ref == 'refs/heads/main')
@@ -188,16 +182,6 @@ jobs:
           tar xf targets.tar
           rm targets.tar
 
-      - name: Download target directories (2.13, rootNative)
-        uses: actions/download-artifact@v4
-        with:
-          name: target-${{ matrix.os }}-${{ matrix.java }}-2.13-rootNative
-
-      - name: Inflate target directories (2.13, rootNative)
-        run: |
-          tar xf targets.tar
-          rm targets.tar
-
       - name: Download target directories (3, rootJS)
         uses: actions/download-artifact@v4
         with:
@@ -214,16 +198,6 @@ jobs:
           name: target-${{ matrix.os }}-${{ matrix.java }}-3-rootJVM
 
       - name: Inflate target directories (3, rootJVM)
-        run: |
-          tar xf targets.tar
-          rm targets.tar
-
-      - name: Download target directories (3, rootNative)
-        uses: actions/download-artifact@v4
-        with:
-          name: target-${{ matrix.os }}-${{ matrix.java }}-3-rootNative
-
-      - name: Inflate target directories (3, rootNative)
         run: |
           tar xf targets.tar
           rm targets.tar
@@ -298,5 +272,5 @@ jobs:
       - name: Submit Dependencies
         uses: scalacenter/sbt-dependency-submission@v2
         with:
-          modules-ignore: otel4s-sttp_2.13 otel4s-sttp_3 otel4s-sttp_2.13 otel4s-sttp_3 otel4s-sttp_2.13 otel4s-sttp_3
+          modules-ignore: otel4s-sttp3_2.13 otel4s-sttp3_3 otel4s-sttp3_2.13 otel4s-sttp3_3 otel4s-sttp3_2.13 otel4s-sttp3_3
           configs-ignore: test scala-tool scala-doc-tool test-internal
