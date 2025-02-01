@@ -20,7 +20,6 @@ ThisBuild / developers := List(
 )*/
 
 ThisBuild / githubWorkflowJavaVersions := Seq(
-  JavaSpec.temurin("8"),
   JavaSpec.semeru("21")
 )
 
