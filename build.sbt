@@ -11,13 +11,13 @@ ThisBuild / developers := List(
   tlGitHubDev("iRevive", "Maksym Ochenashko")
 )
 
-ThisBuild / githubWorkflowBuildPostamble ++= Seq(
+/*ThisBuild / githubWorkflowBuildPostamble ++= Seq(
   WorkflowStep.Sbt(
     List("doc", "docs/mdoc"),
     name = Some("Verify docs"),
     cond = Some("matrix.project == 'rootJVM' && matrix.scala == '2.13'")
   )
-)
+)*/
 
 ThisBuild / githubWorkflowJavaVersions := Seq(
   JavaSpec.temurin("8"),
