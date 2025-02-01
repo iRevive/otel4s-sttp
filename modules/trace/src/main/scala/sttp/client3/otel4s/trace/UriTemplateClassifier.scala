@@ -9,4 +9,3 @@ trait UriTemplateClassifier {
 object UriTemplateClassifier {
   val none: UriTemplateClassifier = _ => None
 }
-

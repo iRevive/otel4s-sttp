@@ -65,7 +65,9 @@ object TracingBackend {
       delegate: SttpBackend[F, P]
   ): SttpBackend[F, P] =
     if (Tracer[F].meta.isEnabled) {
-      new FollowRedirectsBackend(new TracingBackend[F, P](spanNameSelector, spanAttributes, delegate))
+      new FollowRedirectsBackend(
+        new TracingBackend[F, P](spanNameSelector, spanAttributes, delegate)
+      )
     } else {
       delegate
     }

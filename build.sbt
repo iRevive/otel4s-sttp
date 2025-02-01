@@ -48,7 +48,6 @@ lazy val root = tlCrossRootProject
   .settings(name := "otel4s-sttp3")
   .aggregate(metrics, trace)
 
-
 lazy val metrics = crossProject(JVMPlatform, JSPlatform /*, NativePlatform*/ )
   .crossType(CrossType.Pure)
   .in(file("modules/metrics"))
@@ -56,10 +55,13 @@ lazy val metrics = crossProject(JVMPlatform, JSPlatform /*, NativePlatform*/ )
   .settings(
     name := "otel4s-sttp3-metrics",
     libraryDependencies ++= Seq(
-      "com.softwaremill.sttp.client3" %%% "core"                       % Versions.Sttp,
-      "org.typelevel"                 %%% "otel4s-core-metrics"        % Versions.Otel4s,
-      "org.typelevel"                 %%% "otel4s-semconv-metrics"     % Versions.Otel4s,
-      "org.typelevel"                 %%% "otel4s-sdk-metrics-testkit" % Versions.Otel4s % Test
+      "com.softwaremill.sttp.client3" %%% "core"                   % Versions.Sttp,
+      "org.typelevel"                 %%% "otel4s-core-metrics"    % Versions.Otel4s,
+      "org.typelevel"                 %%% "otel4s-semconv"         % Versions.Otel4s,
+      "org.typelevel"                 %%% "otel4s-semconv-metrics" % Versions.Otel4s,
+      "org.typelevel" %%% "otel4s-semconv-metrics-experimental" % Versions.Otel4s % Test,
+      "org.typelevel" %%% "otel4s-sdk-metrics-testkit"          % Versions.Otel4s % Test,
+      "com.softwaremill.sttp.client3" %%% "cats" % Versions.Sttp % Test
     )
   )
 
@@ -74,7 +76,7 @@ lazy val trace = crossProject(JVMPlatform, JSPlatform /*, NativePlatform*/ )
       "org.typelevel"                 %%% "otel4s-core-trace"        % Versions.Otel4s,
       "org.typelevel"                 %%% "otel4s-semconv"           % Versions.Otel4s,
       "org.typelevel"                 %%% "otel4s-sdk-trace-testkit" % Versions.Otel4s     % Test,
-      "com.softwaremill.sttp.client3" %%% "cats"                     % Versions.Sttp       % Test,
-      "org.typelevel"                 %%% "cats-effect-testkit"      % Versions.CatsEffect % Test
+      "org.typelevel"                 %%% "cats-effect-testkit"      % Versions.CatsEffect % Test,
+      "com.softwaremill.sttp.client3" %%% "cats"                     % Versions.Sttp       % Test
     )
   )
