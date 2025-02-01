@@ -19,7 +19,8 @@ import sttp.client3.SttpBackend
 import sttp.client3.otel4s.metrics.MetricsBackend
 
 implicit val tracerProvider: TracerProvider[IO] = ???
-implicit val tracerProvider: MeterProvider[IO] = ???
+implicit val meterProvider: MeterProvider[IO] = ???
+
 val backend: SttpBackend[IO, Any] = ???
 
 for {
