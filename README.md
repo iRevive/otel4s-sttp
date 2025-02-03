@@ -2,6 +2,9 @@
 
 ## Getting started
 
+> [!WARNING]
+> Unpublished yet.
+
 Prepare `build.sbt`:
 ```scala
 libraryDependencies ++= Seq(
